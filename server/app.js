@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const { DB } = require('./config/db');
 
+const users = require('./routes/user');
+
 mongoose.connect(DB, { useNewUrlParser: true })
   .then(
     () => { console.log('Database is connected') }
@@ -14,9 +16,14 @@ mongoose.connect(DB, { useNewUrlParser: true })
 
 const app = express();
 
+app.use(passport.initialize());
+require('./passport')(passport);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
+
+app.use('/api/users', users);
 
 app.get('/', (req, res) => {
   res.status(200).send('hello');
