@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { loginUser } from '../actions/authentication';
+import classnames from 'classnames';
 
 class Login extends Component {
   state = {
@@ -18,10 +23,20 @@ class Login extends Component {
 
     const { email, password } = this.state;
     const user = { email, password };
-    console.log(user);
+    this.props.loginUser(user);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({
+        errors: nextProps.errors
+      })
+    }
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div className = "container" style = {{ marginTop: '50px', width: '700px' }}>
         <h2 style={{marginBottom: '40px'}}>Login</h2>
@@ -30,21 +45,23 @@ class Login extends Component {
             <input
               type="email"
               placeholder="E-mail"
-              className="form-control"
+              className = {classnames('form-control form-control-lg', {'is-invalid': errors.email})}
               name="email"
               onChange={ this.handleInputChange }
               value={ this.state.email }
             />
+            {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}
           </div>
           <div className="form-group">
             <input
               type="password"
               placeholder="Password"
-              className="form-control"
+              className = {classnames('form-control form-control-lg', {'is-invalid': errors.password})}
               name="password"
               onChange={ this.handleInputChange }
               value={ this.state.password }
             />
+            {errors.password && (<div className="invalid-feedback">{errors.password}</div>)}
           </div>
           <div className="form-group">
             <button type="submit" className="btn btn-primary">
@@ -57,4 +74,14 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { loginUser })
+  (withRouter(Login));
