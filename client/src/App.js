@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import Register from './components/Register';
 import Login from './components/Login';
+import Home from './components/Home';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+console.log('test');
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <Navbar/>
-        <Login/>
-        <Register/>
-      </div>
+      <Router>
+        <div>
+          <Navbar/>
+            <Route exact path="/" component={ Home } />
+            <div className="container">
+              <Route exact path="/login" component={ Login } />
+              <Route exact path="/register" component={ Register } />
+            </div>
+        </div>
+      </Router>
     );
   }
 }

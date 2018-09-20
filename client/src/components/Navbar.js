@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 
 class Navbar extends Component {
   render() {
+    const notActive = { color: 'gray' };
+    const active = { color: 'black' };
+
     return (
       <nav className="navbar navbar-expand navbar-light bg-light">
-        <a className="navbar-brand" href="#">Always expand</a>
+        <NavLink className="navbar-brand" to="/">React Node Simple App</NavLink>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#">Home</a>
+              <NavLink
+                className="nav-link"
+                style={notActive}
+                activeStyle={active}
+                to="/login">
+                Login
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Link</a>
+              <NavLink
+                className="nav-link"
+                style={notActive}
+                activeStyle={active}
+                to="/register">
+                Register
+              </NavLink>
             </li>
           </ul>
         </div>
@@ -21,3 +37,4 @@ class Navbar extends Component {
 }
 
 export default Navbar;
+// <NavLink className="nav-link" to="/register">Register</NavLink>
